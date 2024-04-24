@@ -1,0 +1,36 @@
+
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  min-width: 1360px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  .logo {
+    img {
+      height: 80px;
+    }
+  }
+  .user {
+    button {
+      font-size: 20px;
+    }
+  }
+}
+
+#search-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+}
