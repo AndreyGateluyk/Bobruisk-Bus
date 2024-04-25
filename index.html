@@ -23,17 +23,73 @@
       </section>
       <section class="search">
         <form id="search-form">
-          <select name="start" required>
-            <option value="Glusk">Глуск</option>
-            <option value="Bobruisk" selected>Бобруйск</option>
-          </select>
-          <select name="finish" required>
-            <option value="Glusk" selected>Глуск</option>
-            <option value="Bobruisk">Бобруйск</option>
-          </select>
-          <input type="date" name="date" min="2024-04-23">
+          <fieldset>
+            <legend>Место посадки</legend>
+            <select id="city-start" name="city-start" required>
+              <option value="Bobruisk">Бобруйск</option>
+              <option value="Glusk">Глуск</option>
+            </select>
+            <select id="city-station-start" name="city-station-start">
+              <option value="Магазин цыганский">Магазин цыганский</option>
+              <option value="7 ветров">7 ветров</option>
+            </select>
+          </fieldset>
+          <fieldset>
+            <legend>Место прибытия</legend>
+            <select id="city-finish" name="city-finish" required>
+              <option value="Glusk">Глуск</option>
+              <option value="Bobruisk">Бобруйск</option>
+            </select>
+            <select id="city-station-finish" name="city-station-finish" required>
+              <option value="Вокзал">Вокзал</option>
+              <option value="Евроопт">Евроопт</option>
+            </select>
+          </fieldset>
+          <fieldset>
+            <legend>Дата поездки</legend>
+            <input type="date" name="date" min="2024-04-23">
+          </fieldset>
           <button>Найти</button>
         </form>
+        <div class="trip-wrapper">
+          <div class="trip-header">
+            <p>Отправление</p>
+            <p>Прибытие</p>
+            <p>Время в пути</p>
+            <p>Места</p>
+            <p>Цена</p>
+          </div>
+          <div class="trip-items">
+            <div class="trip">
+              <div class="trip-left">
+                <div class="trip__start">
+                  <div class="trip__start-time">08:00</div>
+                  <div class="trip__start-station">Бобруйск, Магазин цыганский</div>
+                </div>
+                <div class="trip__finish">
+                  <div class="trip__finish-time">09:00</div>
+                  <div class="trip__finish-station">Глуск, Автовокзал</div>
+                </div>
+              </div>
+              <div class="trip-right">
+                <div class="trip__time">
+                  1 час
+                </div>
+                <div class="trip__places">
+                  14
+                </div>
+                <div class="trip__price">
+                  5 р.
+                </div>
+                <button>Заказать</button>
+              </div>
+            </div>
+          </div>
+          <div class="trip-footer">
+            <p>Время прибытия указано справочно и может меняться от времени года,
+              дорожных и погодных условий, а также форс-мажорных ситуаций в пути.</p>
+          </div>
+        </div>
       </section>
       <section class="info"></section>
     </main>

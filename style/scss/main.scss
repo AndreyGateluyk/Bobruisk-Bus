@@ -34,3 +34,39 @@ header {
   width: 90%;
   margin: auto;
 }
+
+.trip-wrapper {
+  .trip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    margin: auto;
+  }
+  .trip-items {
+    .trip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 90%;
+      margin: auto;
+      .trip-left, .trip-right {
+        display: flex;
+        justify-content: space-between;
+        width: 45%;
+      }
+    }
+  }
+  .trip-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: auto;
+  }
+}
+
+fieldset {
+  border: none;
+  padding: 15px;
+}

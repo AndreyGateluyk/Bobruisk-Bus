@@ -16,6 +16,28 @@ function handelDate() {
 }
 handelDate();
 
+// Обработка маршрута
+const start = document.querySelector('#city-start');
+function handelStartRoute() {
+  if(start.value === 'Glusk') {
+    finish.value = 'Bobruisk';
+  } 
+  else {
+    finish.value = 'Glusk';
+  }
+}
+start.addEventListener('change', handelStartRoute);
+
+const finish = document.querySelector('#city-finish');
+function handelFinishRoute() {
+  if(finish.value === 'Bobruisk') {
+    start.value = 'Glusk';
+  } else {
+    start.value = 'Bobruisk';
+  }
+}
+finish.addEventListener('change', handelFinishRoute);
+
 // Сбор данных формы
 function serializeForm(formNode) {
   const { elements } = formNode
@@ -35,3 +57,5 @@ function handelForm(event) {
   serializeForm(form);
 }
 form.addEventListener('submit', handelForm);
+
+// Отрисовка доступных рейсов
