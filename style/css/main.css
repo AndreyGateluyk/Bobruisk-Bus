@@ -45,7 +45,7 @@ header .user button {
   margin: auto;
 }
 
-.trip-wrapper .trip-header {
+.trip-container .trip-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -58,7 +58,7 @@ header .user button {
   width: 90%;
   margin: auto;
 }
-.trip-wrapper .trip-items .trip {
+.trip-container .trip-items .trip {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -71,7 +71,7 @@ header .user button {
   width: 90%;
   margin: auto;
 }
-.trip-wrapper .trip-items .trip .trip-left, .trip-wrapper .trip-items .trip .trip-right {
+.trip-container .trip-items .trip .trip-left, .trip-container .trip-items .trip .trip-right {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -80,7 +80,7 @@ header .user button {
           justify-content: space-between;
   width: 45%;
 }
-.trip-wrapper .trip-footer {
+.trip-container .trip-footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
