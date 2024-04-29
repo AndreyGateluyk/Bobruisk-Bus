@@ -80,6 +80,10 @@ header .user button {
           justify-content: space-between;
   width: 45%;
 }
+.trip-container .trip-items .no-trips {
+  width: 100%;
+  text-align: center;
+}
 .trip-container .trip-footer {
   display: -webkit-box;
   display: -ms-flexbox;

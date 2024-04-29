@@ -20,11 +20,11 @@ handelDate();
 // Обработка выбора города
 const start = document.querySelector('#city-start');
 function handelStartCity() {
-  if(start.value === 'Glusk') {
-    finish.value = 'Bobruisk';
+  if(start.value === 'Глуск') {
+    finish.value = 'Бобруйск';
   } 
   else {
-    finish.value = 'Glusk';
+    finish.value = 'Глуск';
   }
   handleStations();
 }
@@ -32,10 +32,10 @@ start.addEventListener('change', handelStartCity);
 
 const finish = document.querySelector('#city-finish');
 function handelFinishCity() {
-  if(finish.value === 'Bobruisk') {
-    start.value = 'Glusk';
+  if(finish.value === 'Бобруйск') {
+    start.value = 'Глуск';
   } else {
-    start.value = 'Bobruisk';
+    start.value = 'Бобруйск';
   }
   handleStations();
 }
@@ -47,7 +47,7 @@ const finishStation = document.querySelector('#city-station-finish');
 function handleStations() {
   startStation.innerHTML = '';
   finishStation.innerHTML = '';
-  if(start.value === 'Bobruisk') {
+  if(start.value === 'Бобруйск') {
     bobruiskStations.forEach((elem, index) => {
       let item = document.createElement('option');
       item.textContent = elem;
@@ -63,7 +63,7 @@ function handleStations() {
       finishStation.append(item);
     });
   } 
-  if(start.value === 'Glusk') {
+  if(start.value === 'Глуск') {
     gluskStations.forEach((elem, index) => {
       let item = document.createElement('option');
       item.textContent = elem;
@@ -85,7 +85,7 @@ handleStations();
 
 // Сбор данных формы
 let data
-function serializeForm(formNode) {
+function collectingFormData(formNode) {
   const { elements } = formNode;
   data = Array.from(elements)
   .filter((item) => !!item.name)
@@ -100,8 +100,7 @@ function serializeForm(formNode) {
 
 function handelForm(event) {
   event.preventDefault();
-  serializeForm(form);
-  console.log(data)
+  collectingFormData(form);
   RenderTrip()
 }
 form.addEventListener('submit', handelForm);
@@ -109,9 +108,21 @@ form.addEventListener('submit', handelForm);
 // Отрисовка доступных рейсов
 const tripItems = document.querySelector('.trip-items');
 function RenderTrip() {
-  schedule.forEach((elem) => {
+  tripItems.innerHTML = '';
+  // Сортировка актуальных рейсов по времени
+  let targetHours = 0;
+  if(new Date().getDate() === Number(data[4].value.substring(8))) {
+    targetHours = new Date().getHours() + 1;
+  }
+  schedule.filter((item) => item.start.substring(0,2) > targetHours)
+  .forEach((elem) => {
     const tripTemplate = `
-    <div class="trip">
+    <div class="trip" 
+      data-start-time="${elem.start}" 
+      data-start-station="${data[0].value}, ${data[1].value}"
+      data-finish-time="${elem.finish}"
+      data-finish-station="${data[2].value}, ${data[3].value}"
+      >
     <div class="trip-left">
       <div class="trip__start">
         <div class="trip__start-time">${elem.start}</div>
@@ -132,10 +143,28 @@ function RenderTrip() {
       <div class="trip__price">
         5 р.
       </div>
-      <button>Заказать</button>
+      <button class="order">Заказать</button>
     </div>
   </div>
     `
     tripItems.insertAdjacentHTML('beforeend', tripTemplate)
   })
+  if(!tripItems.firstChild) {
+    const noTrips = `
+    <div class="no-trips">
+      Сожалеем, рейсов на сегодня больше нет
+    </div>
+    `
+    tripItems.insertAdjacentHTML('beforeend', noTrips)
+  }
+}
+
+// Сбор данных о поездке
+tripItems.addEventListener('click', (e) => {
+  if(e.target.classList.contains('order')) {
+    collectingTripData(e.target.closest('.trip'));
+  }
+})
+function collectingTripData(item) {
+  console.log(item.dataset)
 }
