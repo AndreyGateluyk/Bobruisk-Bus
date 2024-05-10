@@ -1,7 +1,7 @@
-import { bobruiskStations, gluskStations, schedule } from "./data.js";
+import { bobruiskStations, gluskStations, days, scheduleGluskBobruisk, scheduleBobruiskGlusk } from "./data.js";
 const form = document.querySelector('#search-form');
 
-// Обработка даты
+// Обработка выбора даты
 function handelDate() {
   const date = document.querySelector('input[name="date"]');
   date.valueAsDate = new Date ();
@@ -53,6 +53,7 @@ function handleStations() {
       item.textContent = elem;
       item.value = elem;
       item.id = index;
+      item.classList.add('start-station')
       startStation.append(item);
     });
     gluskStations.forEach((elem, index) => {
@@ -60,6 +61,7 @@ function handleStations() {
       item.textContent = elem;
       item.value = elem;
       item.id = index;
+      item.classList.add('finish-station')
       finishStation.append(item);
     });
   } 
@@ -69,6 +71,7 @@ function handleStations() {
       item.textContent = elem;
       item.value = elem;
       item.id = index;
+      item.classList.add('start-station')
       startStation.append(item);
     });
     bobruiskStations.forEach((elem, index) => {
@@ -76,6 +79,7 @@ function handleStations() {
       item.textContent = elem;
       item.value = elem;
       item.id = index;
+      item.classList.add('finish-station')
       finishStation.append(item);
     });
   }
@@ -87,12 +91,13 @@ handleStations();
 let data
 function collectingFormData(formNode) {
   const { elements } = formNode;
+  console.log(formNode[2].value)
   data = Array.from(elements)
   .filter((item) => !!item.name)
   .map((element) => {
       const { name, value } = element;
 
-      return { name, value };
+      return { name, value, };
     })
 
   console.log(data)
@@ -105,37 +110,76 @@ function handelForm(event) {
 }
 form.addEventListener('submit', handelForm);
 
+let startId = 0;
+let finishId = 0;
+form.addEventListener('click', (e) => {
+  if(e.target.id === 'city-station-start') {
+    let startStationArr = document.querySelectorAll('.start-station');
+    document.querySelector('select[id="city-station-start"]').addEventListener('change', (e) => {
+      startStationArr.forEach((elem, index) => {
+        if(elem.value === e.target.value) {
+          startId = index;
+        }
+      })
+    });
+      console.log(startId)
+  }
+  if(e.target.id === 'city-station-finish') {
+    let finishStationArr = document.querySelectorAll('.finish-station');
+    document.querySelector('select[id="city-station-finish"]').addEventListener('change', (e) => {
+      finishStationArr.forEach((elem, index) => {
+        if(elem.value === e.target.value) {
+          finishId = index;
+        }
+      })
+    });
+      console.log(finishId)
+  }
+})
+
+
 // Отрисовка доступных рейсов
 const tripItems = document.querySelector('.trip-items');
 function RenderTrip() {
   tripItems.innerHTML = '';
+  let cityStart = data[0].value;
+  let currentDay = days[new Date(data[4].value).getDay()];
+  let currentSchedule;
+  if (cityStart === 'Бобруйск') {
+    currentSchedule = scheduleBobruiskGlusk.filter((item) => item.day === currentDay)[0].start;
+  }
+  if (cityStart === 'Глуск') {
+    currentSchedule = scheduleGluskBobruisk.filter((item) => item.day === currentDay)[0].start;
+  }
   // Сортировка актуальных рейсов по времени
   let targetHours = 0;
   if(new Date().getDate() === Number(data[4].value.substring(8))) {
     targetHours = new Date().getHours() + 1;
   }
-  schedule.filter((item) => item.start.substring(0,2) > targetHours)
+  currentSchedule.filter((item) => item.substring(0,2) > targetHours)
   .forEach((elem) => {
+    let timeStart = calculateTime(elem, startId);
+    let timeFinish = calculateTime(Number(elem.substring(0,2)) + 1 + ':' + elem.substring(3,5), finishId)
     const tripTemplate = `
     <div class="trip" 
-      data-start-time="${elem.start}" 
+      data-start-time="${timeStart}" 
       data-start-station="${data[0].value}, ${data[1].value}"
-      data-finish-time="${elem.finish}"
+      data-finish-time="${timeFinish}"
       data-finish-station="${data[2].value}, ${data[3].value}"
       >
     <div class="trip-left">
       <div class="trip__start">
-        <div class="trip__start-time">${elem.start}</div>
+        <div class="trip__start-time">${timeStart}</div>
         <div class="trip__start-station">${data[0].value}, ${data[1].value}</div>
       </div>
       <div class="trip__finish">
-        <div class="trip__finish-time">${elem.finish}</div>
+        <div class="trip__finish-time">${timeFinish}</div>
         <div class="trip__finish-station">${data[2].value}, ${data[3].value}</div>
       </div>
     </div>
     <div class="trip-right">
       <div class="trip__time">
-        1 час
+        ${calculateTimeToTrip(timeStart, timeFinish)}
       </div>
       <div class="trip__places">
         14
@@ -157,6 +201,31 @@ function RenderTrip() {
     `
     tripItems.insertAdjacentHTML('beforeend', noTrips)
   }
+}
+
+// Обработка времени приезда-отъезда
+function calculateTime(time, id) {
+  const min = (Number(time.substring(0,2)) * 60) + Number(time.substring(3,5)) + (id * 3);
+  const minRest = String(min % 60).padStart(2, '0');
+  const hours = String((Number(min) - minRest) / 60).padStart(2, '0');
+  return `${hours}:${minRest}`;
+}
+
+// Подсчет времени в пути
+function calculateTimeToTrip(start, finish) {
+  const startToMin = Number((start.substring(0,2)) * 60) + Number(start.substring(3,5));
+  const finishToMin = Number((finish.substring(0,2)) * 60) + Number(finish.substring(3,5));
+  const timeToMin = finishToMin - startToMin;
+  console.log(start, finish)
+  let time
+  if (timeToMin < 60) {
+    time = `00:${String(timeToMin).padStart(2, '0')}`;
+  } else {
+    let min = String(timeToMin % 60).padStart(2, '0');
+    let hours = String((timeToMin - Number(min)) / 60).padStart(2,'0')
+    time = `${hours} : ${min}`
+  }
+  return time;
 }
 
 // Сбор данных о поездке
