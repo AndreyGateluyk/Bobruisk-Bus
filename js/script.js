@@ -1,4 +1,5 @@
 import { bobruiskStations, gluskStations, days, scheduleGluskBobruisk, scheduleBobruiskGlusk } from "./data.js";
+import { userId, usersBase } from "./authorization.js";
 const form = document.querySelector('#search-form');
 
 // Обработка выбора даты
@@ -91,7 +92,6 @@ handleStations();
 let data
 function collectingFormData(formNode) {
   const { elements } = formNode;
-  console.log(formNode[2].value)
   data = Array.from(elements)
   .filter((item) => !!item.name)
   .map((element) => {
@@ -99,14 +99,12 @@ function collectingFormData(formNode) {
 
       return { name, value, };
     })
-
-  console.log(data)
 }
 
 function handelForm(event) {
   event.preventDefault();
   collectingFormData(form);
-  RenderTrip()
+  RenderTrip();
 }
 form.addEventListener('submit', handelForm);
 
@@ -144,6 +142,7 @@ function RenderTrip() {
   tripItems.innerHTML = '';
   let cityStart = data[0].value;
   let currentDay = days[new Date(data[4].value).getDay()];
+  let startDate = data[4].value.split('-').reverse().join('.');
   let currentSchedule;
   if (cityStart === 'Бобруйск') {
     currentSchedule = scheduleBobruiskGlusk.filter((item) => item.day === currentDay)[0].start;
@@ -162,6 +161,7 @@ function RenderTrip() {
     let timeFinish = calculateTime(Number(elem.substring(0,2)) + 1 + ':' + elem.substring(3,5), finishId)
     const tripTemplate = `
     <div class="trip" 
+      data-start-day="${startDate}"
       data-start-time="${timeStart}" 
       data-start-station="${data[0].value}, ${data[1].value}"
       data-finish-time="${timeFinish}"
@@ -216,14 +216,13 @@ function calculateTimeToTrip(start, finish) {
   const startToMin = Number((start.substring(0,2)) * 60) + Number(start.substring(3,5));
   const finishToMin = Number((finish.substring(0,2)) * 60) + Number(finish.substring(3,5));
   const timeToMin = finishToMin - startToMin;
-  console.log(start, finish)
-  let time
+  let time;
   if (timeToMin < 60) {
     time = `00:${String(timeToMin).padStart(2, '0')}`;
   } else {
     let min = String(timeToMin % 60).padStart(2, '0');
-    let hours = String((timeToMin - Number(min)) / 60).padStart(2,'0')
-    time = `${hours} : ${min}`
+    let hours = String((timeToMin - Number(min)) / 60).padStart(2,'0');
+    time = `${hours} : ${min}`;
   }
   return time;
 }
@@ -235,5 +234,7 @@ tripItems.addEventListener('click', (e) => {
   }
 })
 function collectingTripData(item) {
-  console.log(item.dataset)
+  usersBase.filter((elem) => elem.id === userId)[0].trips.push(item.dataset);
+  localStorage.setItem("usersBase", JSON.stringify(usersBase));
 }
+console.log(usersBase)
