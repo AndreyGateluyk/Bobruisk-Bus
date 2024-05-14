@@ -98,7 +98,7 @@ function collectingFormData(formNode) {
       const { name, value } = element;
 
       return { name, value, };
-    })
+    });
 }
 
 function handelForm(event) {
@@ -120,7 +120,6 @@ form.addEventListener('click', (e) => {
         }
       })
     });
-      console.log(startId)
   }
   if(e.target.id === 'city-station-finish') {
     let finishStationArr = document.querySelectorAll('.finish-station');
@@ -131,7 +130,6 @@ form.addEventListener('click', (e) => {
         }
       })
     });
-      console.log(finishId)
   }
 })
 
@@ -158,7 +156,7 @@ function RenderTrip() {
   currentSchedule.filter((item) => item.substring(0,2) > targetHours)
   .forEach((elem) => {
     let timeStart = calculateTime(elem, startId);
-    let timeFinish = calculateTime(Number(elem.substring(0,2)) + 1 + ':' + elem.substring(3,5), finishId)
+    let timeFinish = calculateTime(String(Number(elem.substring(0,2)) + 1).padStart(2, '0') + ':' + elem.substring(3,5), finishId);
     const tripTemplate = `
     <div class="trip" 
       data-start-day="${startDate}"
@@ -166,6 +164,7 @@ function RenderTrip() {
       data-start-station="${data[0].value}, ${data[1].value}"
       data-finish-time="${timeFinish}"
       data-finish-station="${data[2].value}, ${data[3].value}"
+      data-passengers="0"
       >
     <div class="trip-left">
       <div class="trip__start">
@@ -181,8 +180,13 @@ function RenderTrip() {
       <div class="trip__time">
         ${calculateTimeToTrip(timeStart, timeFinish)}
       </div>
-      <div class="trip__places">
+      <div class="trip__places-free" data-quantity-free=14>
         14
+      </div>
+      <div class="trip__places">
+        <button id="minus">-</button>
+        <div class="trip__places-quantity" data-quantity=1>1</div>
+        <button id="plus">+</button>
       </div>
       <div class="trip__price">
         5 р.
@@ -192,7 +196,7 @@ function RenderTrip() {
   </div>
     `
     tripItems.insertAdjacentHTML('beforeend', tripTemplate)
-  })
+  });
   if(!tripItems.firstChild) {
     const noTrips = `
     <div class="no-trips">
@@ -201,6 +205,30 @@ function RenderTrip() {
     `
     tripItems.insertAdjacentHTML('beforeend', noTrips)
   }
+  tripItems.addEventListener('click', (e) => {
+    changePassengers(e.target);
+  })
+}
+
+//
+function changePassengers(btn) {
+  const quantity = btn.closest('.trip__places').children[1];
+  let quantityData = Number(quantity.dataset.quantity);
+  if(btn.id === 'minus') {
+    if(quantityData === 1) {
+      return
+    }
+    quantity.setAttribute('data-quantity', quantityData-1)
+    quantity.textContent = quantityData - 1;
+  }
+  if(btn.id === 'plus') {
+    if(quantityData === 6) {
+      return
+    }
+    quantity.setAttribute('data-quantity', quantityData+1)
+    quantity.textContent = quantityData + 1
+  }
+  console.log(quantity, btn.id)
 }
 
 // Обработка времени приезда-отъезда

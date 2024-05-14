@@ -60,6 +60,12 @@ header {
       width: 100%;
       text-align: center;
     }
+    .trip__places {
+      display: flex;
+      div {
+      margin: 0 10px;
+      }
+    }
   }
   .trip-footer {
     display: flex;

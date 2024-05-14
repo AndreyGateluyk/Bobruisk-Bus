@@ -84,6 +84,14 @@ header .user button {
   width: 100%;
   text-align: center;
 }
+.trip-container .trip-items .trip__places {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.trip-container .trip-items .trip__places div {
+  margin: 0 10px;
+}
 .trip-container .trip-footer {
   display: -webkit-box;
   display: -ms-flexbox;

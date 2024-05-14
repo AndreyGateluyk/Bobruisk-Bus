@@ -35,3 +35,50 @@ export const scheduleBobruiskGlusk = [
   {day: "ПТ", start: ["10:00", "15:30", "18:30", "21:00"]},
   {day: "СБ", start: ["10:00", "15:30", "18:30"]},
 ];
+
+const baseExample = [
+  {
+    id: "375257238842",
+    value: "12345678",
+    trips: [
+      {
+        startDay: '15.05.2024',
+        startTime: '21:00',
+        startStation: "Бобруйск, Магазин 'Цыганский'",
+        finishTime: '22:00',
+        finishStation: 'Глуск, Центр',
+        passengers: '1'
+      }, 
+      {
+        startDay: '15.05.2024',
+        startTime: '21:00',
+        startStation: "Бобруйск, Магазин 'Цыганский'",
+        finishTime: '22:00',
+        finishStation: 'Глуск, Центр',
+        passengers: '1'
+      }
+    ]
+  },
+  {
+    id: "375257238840",
+    value: "12121212",
+    trips: [
+      {
+        startDay: '15.05.2024',
+        startTime: '21:00',
+        startStation: "Бобруйск, Магазин 'Цыганский'",
+        finishTime: '22:00',
+        finishStation: 'Глуск, Центр',
+        passengers: '1'
+      }, 
+      {
+        startDay: '15.05.2024',
+        startTime: '21:00',
+        startStation: "Бобруйск, Магазин 'Цыганский'",
+        finishTime: '22:00',
+        finishStation: 'Глуск, Центр',
+        passengers: '1'
+      }
+    ]
+  },
+];

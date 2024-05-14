@@ -2,7 +2,6 @@ export let usersBase = JSON.parse(localStorage.getItem("usersBase")) || [];
 export let userId;
 const login = document.querySelector('#login');
 const main = document.querySelector('main');
-console.log(usersBase);
 
 // Проверка авторизации пользователя
 if(JSON.parse(localStorage.getItem("saveAuth"))) {
@@ -102,22 +101,3 @@ function refreshPageAfterLogin() {
   const formContainer = document.querySelector('.modal-wrapper');
   main.removeChild(formContainer);
 }
-
-const baseExample = [
-  {
-    id: "375257238842",
-    value: "12345678",
-    trips: [
-      {startTime: '21:00', startStation: "Бобруйск, Магазин 'Цыганский'", finishTime: '22:00', finishStation: 'Глуск, Центр'}, 
-      {startTime: '21:00', startStation: "Бобруйск, Магазин 'Цыганский'", finishTime: '22:00', finishStation: 'Глуск, Центр'}
-    ]
-  },
-  {
-    id: "375257238840",
-    value: "12121212",
-    trips: [
-      {startTime: '21:00', startStation: "Бобруйск, Магазин 'Цыганский'", finishTime: '22:00', finishStation: 'Глуск, Центр'}, 
-      {startTime: '21:00', startStation: "Бобруйск, Магазин 'Цыганский'", finishTime: '22:00', finishStation: 'Глуск, Центр'}
-    ]
-  },
-];
