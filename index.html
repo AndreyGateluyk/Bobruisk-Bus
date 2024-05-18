@@ -10,16 +10,21 @@
 <body>
   <div class="container">
     <header>
-      <div class="logo"><img src="/image/logo.jpg" alt=""></div>
-      <div class="user">
-        <button id="login" data-condition="no-auth">
-          Войти
-        </button>
-      </div>
+      <nav>
+        <div class="logo"><a href="index.html"><img src="/image/logo.png" alt=""></a></div>
+        <div class="user">
+          <button id="login" class="btn__header" data-condition="no-auth">
+            Войти
+          </button>
+        </div>
+      </nav>
+      <section class="hero">
+        <p class="hero__title"><span>БобруйскБус</span> - официальный регулярный перевозчик</p>
+        <div>
+          <img src="/image/road.jpg" alt="дорога">
+        </div>
     </header>
     <main>
-      <section class="hero">
-        <img src="" alt="">
       </section>
       <section class="search">
         <form id="search-form">
@@ -45,7 +50,7 @@
             <legend>Дата поездки</legend>
             <input type="date" name="date" min="2024-04-23">
           </fieldset>
-          <button>Найти</button>
+          <button class="btn__search">Найти</button>
         </form>
         <div class="trip-container">
           <!-- <div class="trip-header">
@@ -56,35 +61,6 @@
             <p>Цена</p>
           </div> -->
           <div class="trip-items">
-            <div class="trip">
-              <div class="trip-left">
-                <div class="trip__start">
-                  <div class="trip__start-time">08:00</div>
-                  <div class="trip__start-station">Бобруйск, Магазин цыганский</div>
-                </div>
-                <div class="trip__finish">
-                  <div class="trip__finish-time">09:00</div>
-                  <div class="trip__finish-station">Глуск, Автовокзал</div>
-                </div>
-              </div>
-              <div class="trip-right">
-                <div class="trip__time">
-                  1 час
-                </div>
-                <div class="trip__places-free">
-                  14
-                </div>
-                <div class="trip__places">
-                  <button id="minus">-</button>
-                  <div class="trip__places-quantity">1</div>
-                  <button id="plus">+</button>
-                </div>
-                <div class="trip__price">
-                  5 р.
-                </div>
-                <button>Заказать</button>
-              </div>
-            </div>
           </div>
           <div class="trip-footer">
             <p>Время прибытия указано справочно и может меняться от времени года,
@@ -95,9 +71,18 @@
       <section class="info"></section>
     </main>
     <footer>
+      <div class="footer-main">
+        <p><a href="tel:+375(29)6728259">+375(29)672-82-59</a> - Евгений</p>
+        <p><a href="tel:+375(29)6164765">+375(29)616-47-65</a> - Михаил</p>
+      </div>
+      <div class="footer-text">
+        <p>© 2019 - 2024, ООО «БобруйскБус»</p>
+        <p>УНП 145488657</p>
+      </div>
     </footer>
   </div>
   <script src="/js/script.js" type="module"></script>
   <script src="/js/authorization.js" type="module"></script>
+  <script src="/js/personalArea.js" type="module"></script>
 </body>
 </html>

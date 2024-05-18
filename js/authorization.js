@@ -1,3 +1,4 @@
+import { loadArea } from "./personalArea.js";
 export let usersBase = JSON.parse(localStorage.getItem("usersBase")) || [];
 export let userId;
 const login = document.querySelector('#login');
@@ -6,10 +7,20 @@ const main = document.querySelector('main');
 // Проверка авторизации пользователя
 if(JSON.parse(localStorage.getItem("saveAuth"))) {
   login.textContent = "Личный кабинет";
+  login.dataset.condition = "auth"
   userId = JSON.parse(localStorage.getItem("saveAuth")).id;
 }
 
-login.addEventListener('click', authorizationUser);
+login.addEventListener('click', loginBtnAction);
+
+function loginBtnAction() {
+  if(login.dataset.condition === 'no-auth') {
+    authorizationUser();
+  }
+  if(login.dataset.condition === 'auth') {
+    loadArea();
+  }
+}
 
 function authorizationUser() {
   const modal = `
@@ -41,7 +52,7 @@ function authorizationUser() {
   function collectingFormData(formNode) {
     const { elements } = formNode;
     const userData = Array.from(elements).filter((item) => !!item.name);
-    return currentUser = {id:userData[0].value, pass:userData[1].value, trips: []};
+    return currentUser = {id:userData[0].value, pass:userData[1].value, trips:[]};
   }
   
   function handelFormLogin(event) {
@@ -64,11 +75,12 @@ function closeForm(item) {
 function findUser(user) {
   const item = usersBase.filter((item) => item.id === user.id);
   if(item.length === 0) {
-    registeredNewUser(user);
     saveAuthorization(user);
-    //loginUser(item[0], user);
+    registeredNewUser(user);
+    loginUser(item[0], user);
   }
   if(item.length === 1) {
+    saveAuthorization(user);
     loginUser(item[0], user);
   }
 }
@@ -77,6 +89,8 @@ function findUser(user) {
 function registeredNewUser(data) {
   usersBase.push(data);
   localStorage.setItem("usersBase", JSON.stringify(usersBase));
+  location.reload();
+  loadArea();
 }
 
 // Сохранение авторизации пользователя
@@ -90,6 +104,8 @@ function loginUser(base, user) {
     userId = user.id;
     console.log("Верный пароль", userId)
     refreshPageAfterLogin();
+    saveAuthorization(user);
+    loadArea();
   } else {
     alert("Неверный пароль!");
   }
@@ -100,4 +116,5 @@ function refreshPageAfterLogin() {
   login.textContent = "Личный кабинет";
   const formContainer = document.querySelector('.modal-wrapper');
   main.removeChild(formContainer);
+  loadArea();
 }

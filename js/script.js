@@ -1,5 +1,6 @@
-import { bobruiskStations, gluskStations, days, scheduleGluskBobruisk, scheduleBobruiskGlusk } from "./data.js";
+import { bobruiskStations, gluskStations, days, months, scheduleGluskBobruisk, scheduleBobruiskGlusk } from "./data.js";
 import { userId, usersBase } from "./authorization.js";
+import { removeOffer } from "./personalArea.js";
 const form = document.querySelector('#search-form');
 
 // Обработка выбора даты
@@ -135,12 +136,13 @@ form.addEventListener('click', (e) => {
 
 
 // Отрисовка доступных рейсов
-const tripItems = document.querySelector('.trip-items');
+export const tripItems = document.querySelector('.trip-items');
 function RenderTrip() {
   tripItems.innerHTML = '';
   let cityStart = data[0].value;
+  let currentDate = new Date(data[4].value).getDate();
   let currentDay = days[new Date(data[4].value).getDay()];
-  let startDate = data[4].value.split('-').reverse().join('.');
+  let currentMonth = months[new Date(data[4].value).getMonth()];
   let currentSchedule;
   if (cityStart === 'Бобруйск') {
     currentSchedule = scheduleBobruiskGlusk.filter((item) => item.day === currentDay)[0].start;
@@ -159,12 +161,13 @@ function RenderTrip() {
     let timeFinish = calculateTime(String(Number(elem.substring(0,2)) + 1).padStart(2, '0') + ':' + elem.substring(3,5), finishId);
     const tripTemplate = `
     <div class="trip" 
-      data-start-day="${startDate}"
+      data-start-day="${currentDay}"
+      data-start-date="${currentDate} ${currentMonth}"
       data-start-time="${timeStart}" 
       data-start-station="${data[0].value}, ${data[1].value}"
       data-finish-time="${timeFinish}"
       data-finish-station="${data[2].value}, ${data[3].value}"
-      data-passengers="0"
+      data-passengers="1"
       >
     <div class="trip-left">
       <div class="trip__start">
@@ -185,13 +188,13 @@ function RenderTrip() {
       </div>
       <div class="trip__places">
         <button id="minus">-</button>
-        <div class="trip__places-quantity" data-quantity=1>1</div>
+        <div class="trip__places-quantity">1</div>
         <button id="plus">+</button>
       </div>
       <div class="trip__price">
         5 р.
       </div>
-      <button class="order">Заказать</button>
+      <button class="order btn">Заказать</button>
     </div>
   </div>
     `
@@ -205,30 +208,43 @@ function RenderTrip() {
     `
     tripItems.insertAdjacentHTML('beforeend', noTrips)
   }
-  tripItems.addEventListener('click', (e) => {
-    changePassengers(e.target);
-  })
 }
 
-//
+tripItems.addEventListener('click', (e) => {
+  changePassengers(e.target);
+});
+
+// Изменение количества пассажиров
 function changePassengers(btn) {
+  if(btn.classList.contains('refuse')) {
+    removeOffer(btn);
+    return
+  }
+  if(btn.classList.contains('order')) {
+    collectingTripData(btn.closest('.trip'));
+    return
+  }
+  const trip = btn.closest('.trip');
   const quantity = btn.closest('.trip__places').children[1];
-  let quantityData = Number(quantity.dataset.quantity);
+  let tripPassengers = Number(trip.dataset.passengers);
   if(btn.id === 'minus') {
-    if(quantityData === 1) {
+    if(tripPassengers === 1) {
       return
     }
-    quantity.setAttribute('data-quantity', quantityData-1)
-    quantity.textContent = quantityData - 1;
+    tripPassengers -= 1
+    console.log(tripPassengers)
+    trip.setAttribute('data-passengers', tripPassengers)
+    quantity.textContent = tripPassengers;
   }
   if(btn.id === 'plus') {
-    if(quantityData === 6) {
+    if(tripPassengers === 6) {
       return
     }
-    quantity.setAttribute('data-quantity', quantityData+1)
-    quantity.textContent = quantityData + 1
+    tripPassengers += 1
+    console.log(tripPassengers)
+    trip.setAttribute('data-passengers', tripPassengers)
+    quantity.textContent = tripPassengers;
   }
-  console.log(quantity, btn.id)
 }
 
 // Обработка времени приезда-отъезда
@@ -256,11 +272,6 @@ function calculateTimeToTrip(start, finish) {
 }
 
 // Сбор данных о поездке
-tripItems.addEventListener('click', (e) => {
-  if(e.target.classList.contains('order')) {
-    collectingTripData(e.target.closest('.trip'));
-  }
-})
 function collectingTripData(item) {
   usersBase.filter((elem) => elem.id === userId)[0].trips.push(item.dataset);
   localStorage.setItem("usersBase", JSON.stringify(usersBase));

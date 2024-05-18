@@ -1,3 +1,9 @@
+* {
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  font: 1rem "Fira Sans", sans-serif;
+}
+
 body {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -5,13 +11,72 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  background-color: rgb(229, 235, 235);
 }
 
 .container {
   min-width: 1360px;
 }
 
-header {
+.btn {
+  background-color: rgb(153, 160, 160);
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+}
+
+.btn:hover {
+  background-color: rgb(160, 173, 180);
+  -webkit-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+.btn__header {
+  background-color: rgba(0, 0, 0, 0);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+}
+
+.btn__header:hover {
+  -webkit-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+          transform: scale(1.05);
+  color: rgb(177, 174, 180);
+}
+
+.btn__search {
+  background-color: rgb(153, 160, 160);
+  border-radius: 5px;
+  border: none;
+  padding: 15px;
+  font-size: 22px;
+}
+
+#plus, #minus {
+  width: 36px;
+  height: 36px;
+  background-color: rgb(153, 160, 160);
+  border-radius: 18px;
+  border: none;
+}
+
+#plus:hover {
+  background-color: rgb(160, 173, 180);
+  -webkit-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+#minus:hover {
+  background-color: rgb(160, 173, 180);
+  -webkit-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+header nav {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -23,12 +88,47 @@ header {
           align-items: center;
   width: 100%;
   padding: 10px;
-}
-header .logo img {
   height: 80px;
 }
-header .user button {
+header nav .logo img {
+  height: 80px;
+}
+header nav .user button {
   font-size: 20px;
+}
+header .hero {
+  height: 200px;
+  color: white;
+}
+header .hero .hero__title {
+  margin-left: 5%;
+  font-size: 26px;
+}
+header .hero .hero__title span {
+  font-size: 26px;
+  color: rgb(177, 174, 180);
+  font-weight: 900;
+}
+header .hero div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  overflow: hidden;
+  width: 100%;
+  height: 300px;
+}
+header .hero div img {
+  width: 100%;
 }
 
 #search-form {
@@ -43,6 +143,21 @@ header .user button {
           align-items: center;
   width: 90%;
   margin: auto;
+  background-color: rgb(205, 212, 212);
+  padding: 10px;
+  border-radius: 10px;
+}
+#search-form fieldset {
+  width: 30%;
+}
+#search-form fieldset legend {
+  margin-left: 30%;
+}
+#search-form fieldset select {
+  width: 45%;
+}
+#search-form fieldset input {
+  margin-left: 30%;
 }
 
 .trip-container .trip-header {
@@ -69,7 +184,10 @@ header .user button {
       -ms-flex-pack: justify;
           justify-content: space-between;
   width: 90%;
-  margin: auto;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
 }
 .trip-container .trip-items .trip .trip-left, .trip-container .trip-items .trip .trip-right {
   display: -webkit-box;
@@ -109,6 +227,36 @@ header .user button {
 fieldset {
   border: none;
   padding: 15px;
+}
+
+footer {
+  background-color: rgb(89, 92, 92);
+  position: absolute;
+  width: 100%;
+  right: 0;
+  color: #fff;
+}
+footer a {
+  text-decoration: none;
+  color: #fff;
+}
+footer .footer-main p {
+  margin-left: 10%;
+}
+footer .footer-text {
+  color: rgb(177, 174, 180);
+}
+footer .footer-text p {
+  text-align: center;
+}
+
+.footer-text::before {
+  content: "";
+  display: block;
+  background-color: rgb(177, 174, 180);
+  width: 80%;
+  height: 1px;
+  margin: auto;
 }
 
 .modal-wrapper {
